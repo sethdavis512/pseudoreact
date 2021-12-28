@@ -1,60 +1,60 @@
 {
-  "name": "pseudopia-web",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@testing-library/jest-dom": "^5.16.1",
-    "@testing-library/react": "^12.1.2",
-    "@testing-library/user-event": "^13.5.0",
-    "@types/jest": "^27.0.3",
-    "@types/node": "^16.11.17",
-    "@types/react": "^17.0.38",
-    "@types/react-dom": "^17.0.11",
-    "@typescript-eslint/typescript-estree": "^5.8.0",
-    "espree": "^9.2.0",
-    "file-saver": "^2.0.5",
-    "handlebars": "^4.7.7",
-    "jszip": "^3.7.1",
-    "mustache": "^4.2.0",
-    "prettier": "^2.5.1",
-    "react": "^17.0.2",
-    "react-codemirror": "^1.0.0",
-    "react-dom": "^17.0.2",
-    "react-scripts": "5.0.0",
-    "typescript": "^4.5.4",
-    "web-vitals": "^2.1.2"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "devDependencies": {
-    "@types/file-saver": "^2.0.4",
-    "@types/handlebars": "^4.1.0",
-    "@types/mustache": "^4.1.2",
-    "@types/react-codemirror": "^1.0.6",
-    "autoprefixer": "^10.4.0",
-    "postcss": "^8.4.5",
-    "tailwindcss": "^3.0.7"
-  }
+    "name": "pseudoreact",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+        "@testing-library/jest-dom": "^5.16.1",
+        "@testing-library/react": "^12.1.2",
+        "@testing-library/user-event": "^13.5.0",
+        "@types/jest": "^27.0.3",
+        "@types/node": "^16.11.17",
+        "@types/react": "^17.0.38",
+        "@types/react-dom": "^17.0.11",
+        "@typescript-eslint/typescript-estree": "^5.8.0",
+        "espree": "^9.2.0",
+        "file-saver": "^2.0.5",
+        "handlebars": "^4.7.7",
+        "jszip": "^3.7.1",
+        "mustache": "^4.2.0",
+        "prettier": "^2.5.1",
+        "react": "^17.0.2",
+        "react-codemirror": "^1.0.0",
+        "react-dom": "^17.0.2",
+        "react-scripts": "5.0.0",
+        "typescript": "^4.5.4",
+        "web-vitals": "^2.1.2"
+    },
+    "scripts": {
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "test": "react-scripts test",
+        "eject": "react-scripts eject"
+    },
+    "eslintConfig": {
+        "extends": [
+            "react-app",
+            "react-app/jest"
+        ]
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "devDependencies": {
+        "@types/file-saver": "^2.0.4",
+        "@types/handlebars": "^4.1.0",
+        "@types/mustache": "^4.1.2",
+        "@types/react-codemirror": "^1.0.6",
+        "autoprefixer": "^10.4.0",
+        "postcss": "^8.4.5",
+        "tailwindcss": "^3.0.7"
+    }
 }

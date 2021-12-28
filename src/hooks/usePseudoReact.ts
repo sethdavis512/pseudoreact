@@ -5,37 +5,37 @@ import {
     rootComponentTemplate
 } from '../constants/templates';
 
-const initialPseudopiaConfig = {
+const initialPseudoReactConfig = {
     pseudoCode: pseudoCodeTemplate,
     rootComponent: rootComponentTemplate,
-    childComponent: childComponentTemplate
+    childComponent: childComponentTemplate,
 };
 
-const usePseudopia = () => {
-    const [pseudopiaState, pseudopiaDispatch] = useReducer(
+const usePseudoReact = () => {
+    const [pseudoState, pseudoDispatch] = useReducer(
         // @ts-ignore - TODO: Fix types
         (state, action) => {
             if (action.type === 'UPDATE_STATE') {
                 return {
                     ...state,
-                    [action.payload.targetKey]: action.payload.text
+                    [action.payload.targetKey]: action.payload.text,
                 };
             }
 
             return state;
         },
-        initialPseudopiaConfig
+        initialPseudoReactConfig
     );
 
     const state = {
-        ...pseudopiaState
+        ...pseudoState,
     };
 
     const actions = {
-        dispatch: pseudopiaDispatch
+        dispatch: pseudoDispatch,
     };
 
     return [state, actions];
 };
 
-export default usePseudopia;
+export default usePseudoReact;

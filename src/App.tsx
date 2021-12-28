@@ -3,7 +3,7 @@ import React, { FormEvent, useState } from 'react';
 import Editor from './components/Editor';
 import ErrorBoundary from './components/ErrorBoundary';
 import Logo from './components/Logo';
-import usePseudopia from './hooks/usePseudopia';
+import usePseudoReact from './hooks/usePseudoReact';
 import { compileContent } from './utils/mustacheUtils';
 import {
     convertPseudoToData,
@@ -18,13 +18,13 @@ import Footer from './components/Footer';
 const NESTED_DIR_NAME = 'components';
 
 const App: React.FunctionComponent = () => {
-    const [state, actions] = usePseudopia();
+    const [state, actions] = usePseudoReact();
 
     // TODO: Make this better...
     useBodyClass('bg-slate-800');
     useBodyClass('text-white');
 
-    const pseudopiaArr = convertPseudoToData(state.pseudoCode);
+    const pseudoData = convertPseudoToData(state.pseudoCode);
 
     const createHandleEditorChange =
         (targetKey: string) =>
@@ -45,7 +45,7 @@ const App: React.FunctionComponent = () => {
     const handleSave = (event: FormEvent): void => {
         event.preventDefault();
 
-        const uniqueComponents = getUniqueImports(pseudopiaArr);
+        const uniqueComponents = getUniqueImports(pseudoData);
         const rootComponentData = uniqueComponents.shift();
 
         const compiledRoot = compileContent(
@@ -84,7 +84,7 @@ const App: React.FunctionComponent = () => {
             );
         });
 
-        saveZip(getUniqueId('pseudopia'));
+        saveZip(getUniqueId('pseudoreact'));
     };
 
     return (
