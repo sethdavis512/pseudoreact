@@ -15,7 +15,7 @@ const Editor: React.FunctionComponent<EditorProps> = ({
     return (
         <CodeMirror
             autoFocus
-            className="border-2 border-slate-800 rounded-md overflow-hidden"
+            className="border-2 border-slate-900 rounded-md overflow-hidden"
             name="pseudoCode"
             onChange={handleChange}
             options={editorOptions}

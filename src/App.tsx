@@ -14,6 +14,10 @@ import { prettify } from './utils/prettierUtils';
 import { addFileToZip, saveZip } from './utils/zipUtils';
 import useBodyClass from './hooks/useBodyClass';
 import Footer from './components/Footer';
+import Tabs from './components/Tabs';
+import Tab from './components/Tab';
+import TabContent from './components/TabContent';
+import FileTree from './components/FileTree';
 
 const NESTED_DIR_NAME = 'components';
 
@@ -23,6 +27,7 @@ const App: React.FunctionComponent = () => {
     // TODO: Make this better...
     useBodyClass('bg-slate-800');
     useBodyClass('text-white');
+    useBodyClass('h-full');
 
     const pseudoData = convertPseudoToData(state.pseudoCode);
 
@@ -88,22 +93,22 @@ const App: React.FunctionComponent = () => {
     };
 
     return (
-        <div>
-            <header className="flex flex-row items-center px-6 py-4 justify-between border-b-2 border-slate-900 bg-slate-800 mb-8 sticky top-0 z-10">
-                <div className="flex flex-row items-center">
+        <div className="flex flex-col h-full">
+            <header className="flex flex-col sm:flex-row items-center px-6 py-4 justify-between border-b-2 border-slate-900 bg-slate-800 mb-8 sticky top-0 z-10">
+                <div className="flex flex-col sm:flex-row items-center mb-4 sm:mb-0">
                     <div className="w-64 md:mr-4">
                         <Logo />
                     </div>
-                    <span className="text-sm">
+                    <span className="text-sm sm:pl-2">
                         Write pseudo React, get components.
                     </span>
                 </div>
                 <nav>
                     <ul className="flex flex-row items-center">
-                        <li className="px-4 py-2 mr-2 hover:bg-slate-900 rounded-md">
+                        {/* <li className="px-4 py-2 mr-2 hover:bg-slate-900 rounded-md">
                             Reach
-                        </li>
-                        <li className="px-4 py-2 hover:bg-slate-900 rounded-md">
+                        </li> */}
+                        <li className="px-4 py-3 hover:bg-slate-900 rounded-md">
                             <a href="https://twitter.com/intent/tweet?text=Write%20pseudo%20React,%20get%20components&via=sethdavis512">
                                 Share on Twitter
                             </a>
@@ -112,47 +117,64 @@ const App: React.FunctionComponent = () => {
                 </nav>
             </header>
             {errorState && <div>{errorState}</div>}
-            <ErrorBoundary>
-                <main className="px-6">
+            <main className="px-6 flex-grow mb-8">
+                <ErrorBoundary>
                     <form onSubmit={handleSave}>
                         <div className="grid md:grid-cols-2 gap-4">
-                            <div>
-                                <div className="mb-4">
-                                    <h2>Pseudo Code</h2>
-                                    <Editor
-                                        handleChange={createHandleEditorChange(
-                                            'pseudoCode'
-                                        )}
-                                        value={state.pseudoCode}
-                                    />
-                                </div>
-                                <div className="mb-4">
-                                    <h2>Root Component Template</h2>
-                                    <Editor
-                                        handleChange={createHandleEditorChange(
-                                            'rootComponent'
-                                        )}
-                                        value={state.rootComponent}
-                                    />
-                                </div>
-                                <div className="mb-4">
-                                    <h2>Child Component Template</h2>
-                                    <Editor
-                                        handleChange={createHandleEditorChange(
-                                            'childComponent'
-                                        )}
-                                        value={state.childComponent}
-                                    />
-                                </div>
+                            <div className="order-2 sm:order-1">
+                                <Tabs initialTabId="pseudoTab">
+                                    <Tab id="pseudoTab">Pseudo</Tab>
+                                    <Tab id="rootTab">Root</Tab>
+                                    <Tab id="childTab">Child</Tab>
+                                    <TabContent id="pseudoTab">
+                                        <h2 className="mb-2 font-bold">
+                                            Pseudo Code
+                                        </h2>
+                                        <Editor
+                                            handleChange={createHandleEditorChange(
+                                                'pseudoCode'
+                                            )}
+                                            value={state.pseudoCode}
+                                        />
+                                    </TabContent>
+                                    <TabContent id="rootTab">
+                                        <h2 className="mb-2 font-bold">
+                                            Root Component Template
+                                        </h2>
+                                        <Editor
+                                            handleChange={createHandleEditorChange(
+                                                'rootComponent'
+                                            )}
+                                            value={state.rootComponent}
+                                        />
+                                    </TabContent>
+                                    <TabContent id="childTab">
+                                        <h2 className="mb-2 font-bold">
+                                            Child Component Template
+                                        </h2>
+                                        <Editor
+                                            handleChange={createHandleEditorChange(
+                                                'childComponent'
+                                            )}
+                                            value={state.childComponent}
+                                        />
+                                    </TabContent>
+                                </Tabs>
                             </div>
-                            <div>
-                                <p>
+                            <div className="order-1 sm:order-2">
+                                <h2 className="text-3xl font-bold mb-4">
+                                    Instructions
+                                </h2>
+                                <p className="mb-4">
                                     Lorem ipsum, dolor sit amet consectetur
                                     adipisicing elit. Veniam ratione, iusto
                                     eaque molestias temporibus qui repudiandae
                                     quos adipisci magnam ea tempore at sint sit
                                     sunt fugiat sequi error officiis fugit?
                                 </p>
+                                <div className="mb-8">
+                                    <FileTree />
+                                </div>
                                 <button
                                     className="bg-green-500 hover:bg-green-400 text-white py-2 px-4 rounded-md"
                                     type="submit"
@@ -162,9 +184,15 @@ const App: React.FunctionComponent = () => {
                             </div>
                         </div>
                     </form>
-                </main>
-            </ErrorBoundary>
-            <Footer>Fooooooter!</Footer>
+                </ErrorBoundary>
+            </main>
+            <Footer>
+                <p className="text-center">
+                    <a href="https://www.buymeacoffee.com/sethdavis512">
+                        Support the app
+                    </a>
+                </p>
+            </Footer>
         </div>
     );
 };

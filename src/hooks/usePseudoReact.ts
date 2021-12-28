@@ -1,8 +1,8 @@
-import { useReducer } from 'react';
+import { useReducer, useEffect } from 'react';
 import {
     childComponentTemplate,
     pseudoCodeTemplate,
-    rootComponentTemplate
+    rootComponentTemplate,
 } from '../constants/templates';
 
 const initialPseudoReactConfig = {
@@ -10,6 +10,8 @@ const initialPseudoReactConfig = {
     rootComponent: rootComponentTemplate,
     childComponent: childComponentTemplate,
 };
+
+const LOCAL_STORAGE_KEY = 'pseudoReactApp';
 
 const usePseudoReact = () => {
     const [pseudoState, pseudoDispatch] = useReducer(
@@ -24,8 +26,21 @@ const usePseudoReact = () => {
 
             return state;
         },
-        initialPseudoReactConfig
+        null,
+        () => {
+            const local = localStorage.getItem(LOCAL_STORAGE_KEY);
+
+            if (local) {
+                return JSON.parse(local);
+            } else {
+                return initialPseudoReactConfig;
+            }
+        }
     );
+
+    useEffect(() => {
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(pseudoState));
+    }, [pseudoState]);
 
     const state = {
         ...pseudoState,
