@@ -1,11 +1,19 @@
-import { handleAst, parseJsx, PseudoItem } from './parserUtils';
+import {
+    handleAst,
+    parseJsx,
+    PseudoItem,
+    defineTreeStructure,
+} from './parserUtils';
 
 export const convertPseudoToData = (pseudoCode: string): any => {
     try {
         const ast = parseJsx(pseudoCode);
 
         if (ast) {
-            return handleAst(ast.body);
+            return {
+                astResult: handleAst(ast.body),
+                treeResult: defineTreeStructure(ast.body),
+            };
         }
     } catch (error) {
         console.error(error);

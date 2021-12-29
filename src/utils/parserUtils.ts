@@ -17,7 +17,7 @@ const isExcluded = ({ openingElement }) =>
         'input',
         'p',
         'section',
-        'span'
+        'span',
     ].indexOf(openingElement.name.name) > -1;
 
 export const parseJsx = (
@@ -28,8 +28,8 @@ export const parseJsx = (
         return espree.parse(code, {
             ecmaVersion: 6,
             ecmaFeatures: {
-                jsx: true
-            }
+                jsx: true,
+            },
         });
     } catch (error) {
         if (errorCallback) {
@@ -55,7 +55,7 @@ export const handleAst = (body) => {
             output.push({
                 name: componentName.name,
                 // @ts-ignore - TODO: Fix types
-                props: propsArr.map((p) => p.name.name)
+                props: propsArr.map((p) => p.name.name),
             });
 
             component.children
@@ -69,4 +69,35 @@ export const handleAst = (body) => {
     body.forEach((top) => getChildren(top.expression));
 
     return output;
+};
+
+// @ts-ignore - TODO: Fix types
+export const defineTreeStructure = (body): string => {
+    let level = 1;
+
+    const output: string[] = [];
+    // @ts-ignore - TODO: Fix types
+    const getChildren = (component) => {
+        if (component.type === 'JSXElement' && !isExcluded(component)) {
+            const { name: componentName } = component.openingElement;
+
+            output.push(
+                `${Array(level).fill('#').join('')}${componentName.name} \r\n`
+            );
+
+            if (component.children.length) {
+                level++;
+                component.children
+                    // @ts-ignore - TODO: Fix types
+                    .filter(({ type }) => type === 'JSXElement')
+                    .forEach(getChildren);
+            }
+        }
+    };
+
+    // @ts-ignore - TODO: Fix types
+    body.forEach((top) => getChildren(top.expression));
+
+    return output.join('');
+    // return `#First.tsx\n##Second.tsx\n###Third.tsx\n##Second2.tsx`;
 };

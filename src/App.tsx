@@ -50,7 +50,7 @@ const App: React.FunctionComponent = () => {
     const handleSave = (event: FormEvent): void => {
         event.preventDefault();
 
-        const uniqueComponents = getUniqueImports(pseudoData);
+        const uniqueComponents = getUniqueImports(pseudoData.astResult);
         const rootComponentData = uniqueComponents.shift();
 
         const compiledRoot = compileContent(
@@ -165,15 +165,24 @@ const App: React.FunctionComponent = () => {
                                 <h2 className="text-3xl font-bold mb-4">
                                     Instructions
                                 </h2>
-                                <p className="mb-4">
-                                    Lorem ipsum, dolor sit amet consectetur
-                                    adipisicing elit. Veniam ratione, iusto
-                                    eaque molestias temporibus qui repudiandae
-                                    quos adipisci magnam ea tempore at sint sit
-                                    sunt fugiat sequi error officiis fugit?
-                                </p>
-                                <div className="mb-8">
-                                    <FileTree />
+                                <div className="mb-4">
+                                    <p>
+                                        Lorem ipsum, dolor sit amet consectetur
+                                        adipisicing elit. Veniam ratione, iusto
+                                        eaque molestias temporibus qui
+                                        repudiandae quos adipisci magnam ea
+                                        tempore at sint sit sunt fugiat sequi
+                                        error officiis fugit?
+                                    </p>
+                                    <ol className="list-inside">
+                                        <li>This</li>
+                                        <li>This</li>
+                                        <li>This</li>
+                                        <li>This</li>
+                                    </ol>
+                                </div>
+                                <div className="mb-8 hidden">
+                                    <FileTree data={pseudoData.treeResult} />
                                 </div>
                                 <button
                                     className="bg-green-500 hover:bg-green-400 text-white py-2 px-4 rounded-md"
