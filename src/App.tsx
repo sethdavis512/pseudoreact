@@ -139,47 +139,15 @@ const App: React.FunctionComponent = () => {
                 <ErrorBoundary>
                     <form onSubmit={handleSave}>
                         <div className="grid md:grid-cols-2 gap-6">
-                            <div className="order-2 sm:order-1">
-                                <Tabs initialTabId="pseudoTab">
-                                    <Tab id="pseudoTab">Pseudo</Tab>
-                                    <Tab id="rootTab">Root</Tab>
-                                    <Tab id="childTab">Component</Tab>
-                                    <TabContent id="pseudoTab">
-                                        <h2 className="mb-2 font-bold">
-                                            Pseudo Code
-                                        </h2>
-                                        <Editor
-                                            handleChange={createHandleEditorChange(
-                                                'pseudoCode'
-                                            )}
-                                            value={state.pseudoCode}
-                                        />
-                                    </TabContent>
-                                    <TabContent id="rootTab">
-                                        <h2 className="mb-2 font-bold">
-                                            Root Component Template
-                                        </h2>
-                                        <Editor
-                                            handleChange={createHandleEditorChange(
-                                                'rootComponent'
-                                            )}
-                                            value={state.rootComponent}
-                                        />
-                                    </TabContent>
-                                    <TabContent id="childTab">
-                                        <h2 className="mb-2 font-bold">
-                                            Component Template
-                                        </h2>
-                                        <Editor
-                                            handleChange={createHandleEditorChange(
-                                                'childComponent'
-                                            )}
-                                            value={state.childComponent}
-                                        />
-                                    </TabContent>
-                                </Tabs>
-                            </div>
-                            <div className="order-1 sm:order-2">
+                            <div>
+                                <h2 className="text-3xl font-bold mb-4">
+                                    What is PseudoReact?
+                                </h2>
+                                <p className="mb-8">
+                                    A tool that expedites component creation by
+                                    leveraging composed, pseudo JSX to write
+                                    files.
+                                </p>
                                 <h2 className="text-3xl font-bold mb-4">
                                     Instructions
                                 </h2>
@@ -221,6 +189,48 @@ const App: React.FunctionComponent = () => {
                                     <FileTree
                                         data={`#Layout.tsx\n##components\n###Header.tsx\n###Main.tsx\n###Footer.tsx`}
                                     />
+                                </div>
+                            </div>
+                            <div className="order-2">
+                                <div className="mb-8">
+                                    <Tabs initialTabId="pseudoTab">
+                                        <Tab id="pseudoTab">Pseudo</Tab>
+                                        <Tab id="rootTab">Root</Tab>
+                                        <Tab id="childTab">Component</Tab>
+                                        <TabContent id="pseudoTab">
+                                            <h2 className="mb-2 font-bold">
+                                                Pseudo Code
+                                            </h2>
+                                            <Editor
+                                                handleChange={createHandleEditorChange(
+                                                    'pseudoCode'
+                                                )}
+                                                value={state.pseudoCode}
+                                            />
+                                        </TabContent>
+                                        <TabContent id="rootTab">
+                                            <h2 className="mb-2 font-bold">
+                                                Root Component Template
+                                            </h2>
+                                            <Editor
+                                                handleChange={createHandleEditorChange(
+                                                    'rootComponent'
+                                                )}
+                                                value={state.rootComponent}
+                                            />
+                                        </TabContent>
+                                        <TabContent id="childTab">
+                                            <h2 className="mb-2 font-bold">
+                                                Component Template
+                                            </h2>
+                                            <Editor
+                                                handleChange={createHandleEditorChange(
+                                                    'childComponent'
+                                                )}
+                                                value={state.childComponent}
+                                            />
+                                        </TabContent>
+                                    </Tabs>
                                 </div>
                                 <button
                                     className="bg-green-500 hover:bg-green-400 text-white py-2 px-4 rounded-md"
