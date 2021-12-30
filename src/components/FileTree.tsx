@@ -13,7 +13,7 @@ const FileTree: React.FunctionComponent<TreeProps> = ({ data }) => {
     try {
         tree = Tree.generate(data);
     } catch (error) {
-        tree = 'Component tree is invalid...';
+        // tree = 'Component tree is invalid...';
 
         ReactGA.exception({
             description:
