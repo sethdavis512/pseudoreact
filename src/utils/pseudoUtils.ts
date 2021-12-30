@@ -1,3 +1,4 @@
+import ReactGA from 'react-ga';
 import {
     handleAst,
     parseJsx,
@@ -9,14 +10,29 @@ export const convertPseudoToData = (pseudoCode: string): any => {
     try {
         const ast = parseJsx(pseudoCode);
 
-        if (ast) {
+        if (ast && ast.body) {
             return {
                 astResult: handleAst(ast.body),
                 treeResult: defineTreeStructure(ast.body),
             };
         }
+
+        return {
+            astResult: null,
+            treeResult: null,
+        };
     } catch (error) {
         console.error(error);
+
+        ReactGA.exception({
+            description:
+                // @ts-ignore
+                error && error.message
+                    ? // @ts-ignore
+                      error.message
+                    : 'convertPseudoToData error',
+            fatal: false,
+        });
     }
 };
 

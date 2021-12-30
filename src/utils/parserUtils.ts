@@ -1,3 +1,4 @@
+import ReactGA from 'react-ga';
 // @ts-ignore - types don't exist
 import * as espree from 'espree';
 
@@ -34,6 +35,16 @@ export const parseJsx = (
     } catch (error) {
         if (errorCallback) {
             errorCallback(error);
+
+            ReactGA.exception({
+                description:
+                    // @ts-ignore
+                    error && error.message
+                        ? // @ts-ignore
+                          error.message
+                        : 'parseJsx error',
+                fatal: false,
+            });
         }
     }
 };
@@ -73,31 +84,31 @@ export const handleAst = (body) => {
 
 // @ts-ignore - TODO: Fix types
 export const defineTreeStructure = (body): string => {
-    let level = 1;
+    // let level = 1;
 
-    const output: string[] = [];
+    // const output: string[] = [];
+    // // @ts-ignore - TODO: Fix types
+    // const getChildren = (component) => {
+    //     if (component.type === 'JSXElement' && !isExcluded(component)) {
+    //         const { name: componentName } = component.openingElement;
+
+    //         output.push(
+    //             `${Array(level).fill('#').join('')}${componentName.name} \r\n`
+    //         );
+
+    //         if (component.children.length) {
+    //             level++;
+    //             component.children
+    //                 // @ts-ignore - TODO: Fix types
+    //                 .filter(({ type }) => type === 'JSXElement')
+    //                 .forEach(getChildren);
+    //         }
+    //     }
+    // };
+
     // @ts-ignore - TODO: Fix types
-    const getChildren = (component) => {
-        if (component.type === 'JSXElement' && !isExcluded(component)) {
-            const { name: componentName } = component.openingElement;
+    // body.forEach((top) => getChildren(top.expression));
 
-            output.push(
-                `${Array(level).fill('#').join('')}${componentName.name} \r\n`
-            );
-
-            if (component.children.length) {
-                level++;
-                component.children
-                    // @ts-ignore - TODO: Fix types
-                    .filter(({ type }) => type === 'JSXElement')
-                    .forEach(getChildren);
-            }
-        }
-    };
-
-    // @ts-ignore - TODO: Fix types
-    body.forEach((top) => getChildren(top.expression));
-
-    return output.join('');
-    // return `#First.tsx\n##Second.tsx\n###Third.tsx\n##Second2.tsx`;
+    // return output.join('');
+    return `#Layout.tsx\n##components\n###Header.tsx\n###Main.tsx\n###Footer.tsx`;
 };

@@ -14,9 +14,8 @@ const Tabs: React.FunctionComponent<TabsProps> = ({
 }) => {
     const [currentTab, setCurrentTab] = useState(initialTabId);
 
-    // @ts-ignore - Fix types
-    const handleSetCurrentTab = (event) => {
-        setCurrentTab(event.target.id);
+    const handleSetCurrentTab = (id: string) => {
+        setCurrentTab(id);
     };
 
     return (

@@ -1,3 +1,4 @@
+import ReactGA from 'react-ga';
 import Mustache from 'mustache';
 
 Mustache.escape = (text) => text;
@@ -9,6 +10,16 @@ export const compileContent = (templateString, data, errorCallback): string => {
     } catch (error) {
         if (errorCallback) {
             errorCallback(error);
+
+            ReactGA.exception({
+                description:
+                    // @ts-ignore
+                    error && error.message
+                        ? // @ts-ignore
+                          error.message
+                        : 'Mustache parse error',
+                fatal: false,
+            });
         }
     }
 };

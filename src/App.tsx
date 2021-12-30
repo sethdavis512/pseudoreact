@@ -1,4 +1,5 @@
 import React, { FormEvent, useState } from 'react';
+import ReactGA, { OutboundLink } from 'react-ga';
 
 import Editor from './components/Editor';
 import ErrorBoundary from './components/ErrorBoundary';
@@ -20,6 +21,13 @@ import TabContent from './components/TabContent';
 import FileTree from './components/FileTree';
 
 const NESTED_DIR_NAME = 'components';
+
+const TWEET_TEXT = `Check out Pseudoreact!
+Write pseudo React, get components.
+
+https://www.pseudoreact.com`;
+
+const encodedTweetText = encodeURIComponent(TWEET_TEXT);
 
 const App: React.FunctionComponent = () => {
     const [state, actions] = usePseudoReact();
@@ -89,6 +97,12 @@ const App: React.FunctionComponent = () => {
             );
         });
 
+        ReactGA.event({
+            category: 'User',
+            action: 'Form submission',
+            label: 'Zip download',
+        });
+
         saveZip(getUniqueId('pseudoreact'));
     };
 
@@ -108,10 +122,15 @@ const App: React.FunctionComponent = () => {
                         {/* <li className="px-4 py-2 mr-2 hover:bg-slate-900 rounded-md">
                             Reach
                         </li> */}
-                        <li className="px-4 py-3 hover:bg-slate-900 rounded-md">
-                            <a href="https://twitter.com/intent/tweet?text=Write%20pseudo%20React,%20get%20components&via=sethdavis512">
+                        <li>
+                            <OutboundLink
+                                className="px-4 py-3 hover:bg-slate-900 rounded-md"
+                                eventLabel="shareOnTwitter"
+                                target="_blank"
+                                to={`https://twitter.com/intent/tweet?text=${encodedTweetText}`} // &via=sethdavis512
+                            >
                                 Share on Twitter
-                            </a>
+                            </OutboundLink>
                         </li>
                     </ul>
                 </nav>
@@ -120,12 +139,12 @@ const App: React.FunctionComponent = () => {
             <main className="px-6 flex-grow mb-8">
                 <ErrorBoundary>
                     <form onSubmit={handleSave}>
-                        <div className="grid md:grid-cols-2 gap-4">
+                        <div className="grid md:grid-cols-2 gap-6">
                             <div className="order-2 sm:order-1">
                                 <Tabs initialTabId="pseudoTab">
                                     <Tab id="pseudoTab">Pseudo</Tab>
                                     <Tab id="rootTab">Root</Tab>
-                                    <Tab id="childTab">Child</Tab>
+                                    <Tab id="childTab">Component</Tab>
                                     <TabContent id="pseudoTab">
                                         <h2 className="mb-2 font-bold">
                                             Pseudo Code
@@ -150,7 +169,7 @@ const App: React.FunctionComponent = () => {
                                     </TabContent>
                                     <TabContent id="childTab">
                                         <h2 className="mb-2 font-bold">
-                                            Child Component Template
+                                            Component Template
                                         </h2>
                                         <Editor
                                             handleChange={createHandleEditorChange(
@@ -165,30 +184,48 @@ const App: React.FunctionComponent = () => {
                                 <h2 className="text-3xl font-bold mb-4">
                                     Instructions
                                 </h2>
-                                <div className="mb-4">
-                                    <p>
-                                        Lorem ipsum, dolor sit amet consectetur
-                                        adipisicing elit. Veniam ratione, iusto
-                                        eaque molestias temporibus qui
-                                        repudiandae quos adipisci magnam ea
-                                        tempore at sint sit sunt fugiat sequi
-                                        error officiis fugit?
-                                    </p>
-                                    <ol className="list-inside">
-                                        <li>This</li>
-                                        <li>This</li>
-                                        <li>This</li>
-                                        <li>This</li>
-                                    </ol>
+                                <div className="mb-8">
+                                    <ul className="list-decimal list-inside">
+                                        <li className="mb-2">
+                                            <span className="inline-block mb-2">
+                                                Add or edit pseudo React code in
+                                                "Pseudo" tab
+                                            </span>
+                                            <div className="pl-4">
+                                                <span className="inline-block mb-2 font-bold">
+                                                    Optional
+                                                </span>
+                                                <ul className="pl-4 list-disc list-inside">
+                                                    <li className="mb-2">
+                                                        Edit root component
+                                                        template code in the
+                                                        "Root" tab
+                                                    </li>
+                                                    <li className="mb-2">
+                                                        Edit component template
+                                                        code in the "Component"
+                                                        tab
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                        <li className="mb-2">
+                                            Click "Download zip" to get
+                                            generated files
+                                        </li>
+                                    </ul>
                                 </div>
-                                <div className="mb-8 hidden">
+                                <div className="mb-8">
+                                    <h2 className="mb-2 font-bold">
+                                        Example Output
+                                    </h2>
                                     <FileTree data={pseudoData.treeResult} />
                                 </div>
                                 <button
                                     className="bg-green-500 hover:bg-green-400 text-white py-2 px-4 rounded-md"
                                     type="submit"
                                 >
-                                    Get zip file
+                                    Download zip
                                 </button>
                             </div>
                         </div>
@@ -196,11 +233,25 @@ const App: React.FunctionComponent = () => {
                 </ErrorBoundary>
             </main>
             <Footer>
-                <p className="text-center">
-                    <a href="https://www.buymeacoffee.com/sethdavis512">
-                        Support the app
-                    </a>
-                </p>
+                <div className="flex flex-col sm:flex-row justify-center items-center">
+                    <OutboundLink
+                        className="px-4 py-3 hover:bg-slate-900 rounded-md"
+                        eventLabel="madeByLink"
+                        target="_blank"
+                        to="https://github.com/sethdavis512"
+                    >
+                        Created by @sethdavis512
+                    </OutboundLink>
+                    <span className="block mx-2 text-white">|</span>
+                    <OutboundLink
+                        className="px-4 py-3 hover:bg-slate-900 rounded-md"
+                        eventLabel="supportLink"
+                        target="_blank"
+                        to="https://www.buymeacoffee.com/sethdavis512"
+                    >
+                        Support
+                    </OutboundLink>
+                </div>
             </Footer>
         </div>
     );

@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactGA from 'react-ga';
 // @ts-ignore
 import Tree from 'ascii-tree';
 
@@ -13,7 +14,13 @@ const FileTree: React.FunctionComponent<TreeProps> = ({ data }) => {
         tree = Tree.generate(data);
     } catch (error) {
         tree = 'Component tree is invalid...';
-        console.log(error);
+
+        ReactGA.exception({
+            description:
+                // @ts-ignore
+                error && error.message ? error.message : 'FileTree error',
+            fatal: false,
+        });
     }
 
     return (

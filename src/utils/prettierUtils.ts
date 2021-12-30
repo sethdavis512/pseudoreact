@@ -1,4 +1,5 @@
 import type { Options } from 'prettier';
+import ReactGA from 'react-ga';
 import { format } from 'prettier/standalone';
 import tsParser from 'prettier/parser-typescript';
 
@@ -19,6 +20,16 @@ export const prettify = (
     } catch (error) {
         if (errorCallback) {
             errorCallback(error);
+
+            ReactGA.exception({
+                description:
+                    // @ts-ignore
+                    error && error.message
+                        ? // @ts-ignore
+                          error.message
+                        : 'prettify error',
+                fatal: false,
+            });
         }
     }
 };

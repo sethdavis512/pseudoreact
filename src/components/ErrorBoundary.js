@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactGA from 'react-ga';
 
 class ErrorBoundary extends React.Component {
     constructor(props) {
@@ -12,13 +13,17 @@ class ErrorBoundary extends React.Component {
     }
 
     componentDidCatch(error, errorInfo) {
-        // Log something...
+        ReactGA.exception({
+            description:
+                error && error.message ? error.message : 'ErrorBoundary hit',
+            fatal: true,
+        });
     }
 
     render() {
         if (this.state.hasError) {
             // You can render any custom fallback UI
-            return <h1 className="text-3xl">Uh oh. An error has occurred.</h1>;
+            return <h2 className="text-3xl">Uh oh. An error has occurred.</h2>;
         }
 
         return this.props.children;
