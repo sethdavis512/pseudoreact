@@ -218,7 +218,9 @@ const App: React.FunctionComponent = () => {
                                     <h2 className="mb-2 font-bold">
                                         Example Output
                                     </h2>
-                                    <FileTree data={pseudoData.treeResult} />
+                                    <FileTree
+                                        data={`#Layout.tsx\n##components\n###Header.tsx\n###Main.tsx\n###Footer.tsx`}
+                                    />
                                 </div>
                                 <button
                                     className="bg-green-500 hover:bg-green-400 text-white py-2 px-4 rounded-md"
