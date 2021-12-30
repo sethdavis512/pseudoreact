@@ -127,7 +127,7 @@ const App: React.FunctionComponent = () => {
                                 className="px-4 py-3 hover:bg-slate-900 rounded-md"
                                 eventLabel="shareOnTwitter"
                                 target="_blank"
-                                to={`https://twitter.com/intent/tweet?text=${encodedTweetText}`} // &via=sethdavis512
+                                to={`https://twitter.com/intent/tweet?text=${encodedTweetText}&via=pseudoreact`}
                             >
                                 Share on Twitter
                             </OutboundLink>
@@ -234,6 +234,15 @@ const App: React.FunctionComponent = () => {
             </main>
             <Footer>
                 <div className="flex flex-col sm:flex-row justify-center items-center">
+                    <OutboundLink
+                        className="px-4 py-3 hover:bg-slate-900 rounded-md"
+                        eventLabel="madeByLink"
+                        target="_blank"
+                        to="https://twitter.com/pseudoreact"
+                    >
+                        Twitter
+                    </OutboundLink>
+                    <span className="block mx-2 text-white">|</span>
                     <OutboundLink
                         className="px-4 py-3 hover:bg-slate-900 rounded-md"
                         eventLabel="madeByLink"
