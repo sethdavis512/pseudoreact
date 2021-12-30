@@ -2,7 +2,7 @@ export const pseudoCodeTemplate = `<Layout>\n    <Header />\n    <Main />\n    <
 
 export const rootComponentTemplate = `import React from "react";
 {{#imports}}
-import {{childName}} from "./{{componentDirName}}/{{childName}}";
+import {{childComponentName}} from "./{{componentDirName}}/{{childComponentName}}";
 {{/imports}}
 
 const {{name}}: React.FunctionComponent = () => {

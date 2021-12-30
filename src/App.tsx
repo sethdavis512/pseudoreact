@@ -66,7 +66,7 @@ const App: React.FunctionComponent = () => {
                 ...rootComponentData,
                 render: state.pseudoCode,
                 imports: uniqueComponents.map((component) => ({
-                    childName: component.name,
+                    childComponentName: component.name,
                     componentDirName: NESTED_DIR_NAME,
                 })),
             },
