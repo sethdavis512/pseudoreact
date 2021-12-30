@@ -22,8 +22,7 @@ import FileTree from './components/FileTree';
 
 const NESTED_DIR_NAME = 'components';
 
-const TWEET_TEXT = `Check out Pseudoreact!
-Write pseudo React, get components.
+const TWEET_TEXT = `Write pseudo React, get components.
 
 https://www.pseudoreact.com`;
 
@@ -127,7 +126,7 @@ const App: React.FunctionComponent = () => {
                                 className="px-4 py-3 hover:bg-slate-900 rounded-md"
                                 eventLabel="shareOnTwitter"
                                 target="_blank"
-                                to={`https://twitter.com/intent/tweet?text=${encodedTweetText}&via=pseudoreact`}
+                                to={`https://twitter.com/intent/tweet?text=${encodedTweetText}`} // &via=pseudoreact
                             >
                                 Share on Twitter
                             </OutboundLink>
