@@ -23,7 +23,11 @@ class ErrorBoundary extends React.Component {
     render() {
         if (this.state.hasError) {
             // You can render any custom fallback UI
-            return <h2 className="text-3xl">Uh oh. An error has occurred.</h2>;
+            return (
+                <div className="bg-red-600 text-white px-4 py-2">
+                    <h2 className="text-3xl">Uh oh. An error has occurred.</h2>
+                </div>
+            );
         }
 
         return this.props.children;

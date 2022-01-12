@@ -1,5 +1,6 @@
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import ReactGA, { OutboundLink } from 'react-ga';
+import { Helmet } from 'react-helmet';
 
 import Editor from './components/Editor';
 import ErrorBoundary from './components/ErrorBoundary';
@@ -41,18 +42,12 @@ const App: React.FunctionComponent = () => {
     const createHandleEditorChange =
         (targetKey: string) =>
         (text: string): void =>
-            actions.dispatch({
-                type: 'UPDATE_STATE',
-                payload: {
-                    targetKey,
-                    text,
-                },
-            });
+            actions.updateTemplate(targetKey, text);
 
     const [errorState, setErrorState] = useState('');
     // @ts-ignore - Fix types
-    const createHandleError = (errorMessage) => (error: unknown) =>
-        setErrorState(errorMessage);
+    const createHandleError = (errorMessage) => (error: Error) =>
+        setErrorState(`${errorMessage}\n\n${error.message}`);
 
     const handleSave = (event: FormEvent): void => {
         event.preventDefault();
@@ -89,6 +84,7 @@ const App: React.FunctionComponent = () => {
                 undefined,
                 prettify(
                     compiled,
+                    // @ts-ignore
                     createHandleError(
                         'Formatting process has encountered an issue...'
                     )
@@ -96,18 +92,37 @@ const App: React.FunctionComponent = () => {
             );
         });
 
-        ReactGA.event({
-            category: 'User',
-            action: 'Form submission',
-            label: 'Zip download',
-        });
-
-        saveZip(getUniqueId('pseudoreact'));
+        if (!errorState) {
+            saveZip(getUniqueId('pseudoreact'));
+            ReactGA.event({
+                category: 'User',
+                action: 'Form submission',
+                label: 'Zip download',
+            });
+        }
     };
+
+    useEffect(() => {
+        setTimeout(() => {
+            setErrorState('');
+        }, 3000);
+    }, [errorState]);
 
     return (
         <div className="flex flex-col h-full">
-            <header className="flex flex-col sm:flex-row items-center px-6 py-4 justify-between border-b-2 border-slate-900 bg-slate-800 mb-8 sticky top-0 z-10">
+            <Helmet>
+                <title>PseudoReact | Write pseudo React, get components</title>
+                <meta name="author" content="Seth Davis" />
+                <meta
+                    name="description"
+                    content="Write pseudo React, get components"
+                />
+                <meta
+                    name="keywords"
+                    content="React, pseudo, PseudoReact, pseudo code, coding, app, tool"
+                />
+            </Helmet>
+            <header className="flex flex-col sm:flex-row items-center px-6 py-4 justify-between border-b-2 border-slate-900 bg-slate-800 sticky top-0 z-10 mb-8">
                 <div className="flex flex-col sm:flex-row items-center mb-4 sm:mb-0">
                     <div className="w-64 md:mr-4">
                         <Logo />
@@ -134,7 +149,6 @@ const App: React.FunctionComponent = () => {
                     </ul>
                 </nav>
             </header>
-            {errorState && <div>{errorState}</div>}
             <main className="px-6 flex-grow mb-8">
                 <ErrorBoundary>
                     <form onSubmit={handleSave}>
@@ -232,12 +246,26 @@ const App: React.FunctionComponent = () => {
                                         </TabContent>
                                     </Tabs>
                                 </div>
-                                <button
-                                    className="bg-green-500 hover:bg-green-400 text-white py-2 px-4 rounded-md"
-                                    type="submit"
-                                >
-                                    Download zip
-                                </button>
+                                {errorState && (
+                                    <div className="bg-red-600 text-white p-4 mb-8">
+                                        <p>{errorState}</p>
+                                    </div>
+                                )}
+                                <div>
+                                    <button
+                                        className="bg-slate-800 hover:bg-slate-900 border-2 border-slate-900 text-white py-2 px-4 rounded-md mr-4 hidden"
+                                        onClick={actions.resetTemplates}
+                                        type="button"
+                                    >
+                                        Reset templates
+                                    </button>
+                                    <button
+                                        className="bg-green-500 hover:bg-green-400 text-white py-2 px-4 rounded-md"
+                                        type="submit"
+                                    >
+                                        Download zip
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </form>
