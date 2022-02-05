@@ -1,4 +1,3 @@
-import React from 'react';
 import { useTabContext } from './Tabs';
 
 interface TabContentProps {
@@ -9,7 +8,7 @@ const TabContent: React.FunctionComponent<TabContentProps> = ({
     children,
     id,
 }) => {
-    // @ts-ignore - Fix types
+    // @ts-ignore - TODO: Fix types
     const { currentTab } = useTabContext();
 
     if (id === currentTab) {

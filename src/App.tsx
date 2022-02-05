@@ -1,106 +1,48 @@
-import React, { FormEvent, useEffect, useState } from 'react';
-import ReactGA, { OutboundLink } from 'react-ga';
+import { useEffect, useState } from 'react';
+import { OutboundLink } from 'react-ga';
 import { Helmet } from 'react-helmet';
 
 import Editor from './components/Editor';
 import ErrorBoundary from './components/ErrorBoundary';
-import Logo from './components/Logo';
-import usePseudoReact from './hooks/usePseudoReact';
-import { compileContent } from './utils/mustacheUtils';
-import {
-    convertPseudoToData,
-    getUniqueId,
-    getUniqueImports,
-} from './utils/pseudoUtils';
-import { prettify } from './utils/prettierUtils';
-import { addFileToZip, saveZip } from './utils/zipUtils';
-import useBodyClass from './hooks/useBodyClass';
+import FileTree from './components/FileTree';
 import Footer from './components/Footer';
-import Tabs from './components/Tabs';
+import Logo from './components/Logo';
 import Tab from './components/Tab';
 import TabContent from './components/TabContent';
-import FileTree from './components/FileTree';
+import Tabs from './components/Tabs';
+import useBodyClass from './hooks/useBodyClass';
+import usePseudoReact from './hooks/usePseudoReact';
+import { convertPseudoToData } from './utils/pseudo';
+import { createHandleSave } from './utils/app';
+import { encodedTweetText } from './constants/app';
 
-const NESTED_DIR_NAME = 'components';
+export default function App() {
+    const [pseudoState, pseudoActions] = usePseudoReact();
 
-const TWEET_TEXT = `Write pseudo React, get components.
-
-https://www.pseudoreact.com`;
-
-const encodedTweetText = encodeURIComponent(TWEET_TEXT);
-
-const App: React.FunctionComponent = () => {
-    const [state, actions] = usePseudoReact();
-
-    // TODO: Make this better...
+    // Manually add tailwind classs to the body
+    // TODO: Replace with better method...
     useBodyClass('bg-slate-800');
     useBodyClass('text-white');
     useBodyClass('h-full');
 
-    const pseudoData = convertPseudoToData(state.pseudoCode);
+    const pseudoData = convertPseudoToData(pseudoState.pseudoCode);
 
     const createHandleEditorChange =
         (targetKey: string) =>
         (text: string): void =>
-            actions.updateTemplate(targetKey, text);
+            pseudoActions.updateTemplate(targetKey, text);
 
     const [errorState, setErrorState] = useState('');
-    // @ts-ignore - Fix types
+    // @ts-ignore - TODO: Fix types
     const createHandleError = (errorMessage) => (error: Error) =>
         setErrorState(`${errorMessage}\n\n${error.message}`);
 
-    const handleSave = (event: FormEvent): void => {
-        event.preventDefault();
-
-        const uniqueComponents = getUniqueImports(pseudoData.astResult);
-        const rootComponentData = uniqueComponents.shift();
-
-        const compiledRoot = compileContent(
-            state.rootComponent,
-            {
-                ...rootComponentData,
-                render: state.pseudoCode,
-                imports: uniqueComponents.map((component) => ({
-                    childComponentName: component.name,
-                    componentDirName: NESTED_DIR_NAME,
-                })),
-            },
-            createHandleError('Root component has encountered an issue...')
-        );
-
-        // @ts-ignore - Fix types
-        addFileToZip(rootComponentData.name, undefined, prettify(compiledRoot));
-
-        uniqueComponents.forEach((pseudoItem: any) => {
-            const compiled = compileContent(
-                state.childComponent,
-                pseudoItem,
-                createHandleError(
-                    'Compiling child component has encountered an issue...'
-                )
-            );
-            addFileToZip(
-                `/${NESTED_DIR_NAME}/${pseudoItem.name}`,
-                undefined,
-                prettify(
-                    compiled,
-                    // @ts-ignore
-                    createHandleError(
-                        'Formatting process has encountered an issue...'
-                    )
-                )
-            );
-        });
-
-        if (!errorState) {
-            saveZip(getUniqueId('pseudoreact'));
-            ReactGA.event({
-                category: 'User',
-                action: 'Form submission',
-                label: 'Zip download',
-            });
-        }
-    };
+    const handleSave = createHandleSave({
+        pseudoData,
+        pseudoState,
+        createHandleError,
+        errorState,
+    });
 
     useEffect(() => {
         setTimeout(() => {
@@ -122,7 +64,7 @@ const App: React.FunctionComponent = () => {
                     content="React, pseudo, PseudoReact, pseudo code, coding, app, tool"
                 />
             </Helmet>
-            <header className="flex flex-col sm:flex-row items-center px-6 py-4 justify-between border-b-2 border-slate-900 bg-slate-800 sticky top-0 z-10 mb-8">
+            <header className="flex flex-col lg:flex-row items-center px-6 py-4 justify-between border-b-2 border-slate-900 bg-slate-800 sticky top-0 z-10 mb-8">
                 <div className="flex flex-col sm:flex-row items-center mb-4 sm:mb-0">
                     <div className="w-64 md:mr-4">
                         <Logo />
@@ -131,14 +73,31 @@ const App: React.FunctionComponent = () => {
                         Write pseudo React, get components.
                     </span>
                 </div>
-                <nav>
-                    <ul className="flex flex-row items-center">
-                        {/* <li className="px-4 py-2 mr-2 hover:bg-slate-900 rounded-md">
-                            Reach
-                        </li> */}
-                        <li>
+                <nav className="w-full sm:w-auto py-2 sm:py-0">
+                    <ul className="flex flex-col sm:flex-row items-center justify-center lg:justify-end text-center">
+                        <li className="w-full sm:w-auto mr-2">
                             <OutboundLink
-                                className="px-4 py-3 hover:bg-slate-900 rounded-md"
+                                className="block sm:inline-block px-4 py-3 hover:bg-slate-900 rounded-md"
+                                eventLabel="gitHubLink"
+                                target="_blank"
+                                to="https://github.com/sethdavis512/pseudoreact"
+                            >
+                                GitHub
+                            </OutboundLink>
+                        </li>
+                        <li className="w-full sm:w-auto mr-2">
+                            <OutboundLink
+                                className="block sm:inline-block px-4 py-3 hover:bg-slate-900 rounded-md"
+                                eventLabel="foundBug"
+                                target="_blank"
+                                to="https://github.com/sethdavis512/pseudoreact/issues"
+                            >
+                                Find a bug?
+                            </OutboundLink>
+                        </li>
+                        <li className="w-full sm:w-auto">
+                            <OutboundLink
+                                className="block sm:inline-block px-4 py-3 hover:bg-slate-900 rounded-md"
                                 eventLabel="shareOnTwitter"
                                 target="_blank"
                                 to={`https://twitter.com/intent/tweet?text=${encodedTweetText}`} // &via=pseudoreact
@@ -152,8 +111,8 @@ const App: React.FunctionComponent = () => {
             <main className="px-6 flex-grow mb-8">
                 <ErrorBoundary>
                     <form onSubmit={handleSave}>
-                        <div className="grid md:grid-cols-2 gap-6">
-                            <div>
+                        <div className="grid md:grid-cols-8 gap-6">
+                            <div className="col-span-full md:col-span-3 border-2 border-slate-900 rounded-md p-6">
                                 <h2 className="text-3xl font-bold mb-4">
                                     What is PseudoReact?
                                 </h2>
@@ -200,12 +159,10 @@ const App: React.FunctionComponent = () => {
                                     <h2 className="mb-2 font-bold">
                                         Example Output
                                     </h2>
-                                    <FileTree
-                                        data={`#Layout.tsx\n##components\n###Header.tsx\n###Main.tsx\n###Footer.tsx`}
-                                    />
+                                    <FileTree data={pseudoData.treeResult} />
                                 </div>
                             </div>
-                            <div className="order-2">
+                            <div className="col-span-full md:col-span-5">
                                 <div className="mb-8">
                                     <Tabs initialTabId="pseudoTab">
                                         <Tab id="pseudoTab">Pseudo</Tab>
@@ -219,7 +176,7 @@ const App: React.FunctionComponent = () => {
                                                 handleChange={createHandleEditorChange(
                                                     'pseudoCode'
                                                 )}
-                                                value={state.pseudoCode}
+                                                value={pseudoState.pseudoCode}
                                             />
                                         </TabContent>
                                         <TabContent id="rootTab">
@@ -230,7 +187,9 @@ const App: React.FunctionComponent = () => {
                                                 handleChange={createHandleEditorChange(
                                                     'rootComponent'
                                                 )}
-                                                value={state.rootComponent}
+                                                value={
+                                                    pseudoState.rootComponent
+                                                }
                                             />
                                         </TabContent>
                                         <TabContent id="childTab">
@@ -241,7 +200,9 @@ const App: React.FunctionComponent = () => {
                                                 handleChange={createHandleEditorChange(
                                                     'childComponent'
                                                 )}
-                                                value={state.childComponent}
+                                                value={
+                                                    pseudoState.childComponent
+                                                }
                                             />
                                         </TabContent>
                                     </Tabs>
@@ -254,7 +215,7 @@ const App: React.FunctionComponent = () => {
                                 <div>
                                     <button
                                         className="bg-slate-800 hover:bg-slate-900 border-2 border-slate-900 text-white py-2 px-4 rounded-md mr-4 hidden"
-                                        onClick={actions.resetTemplates}
+                                        onClick={pseudoActions.resetTemplates}
                                         type="button"
                                     >
                                         Reset templates
@@ -271,38 +232,7 @@ const App: React.FunctionComponent = () => {
                     </form>
                 </ErrorBoundary>
             </main>
-            <Footer>
-                <div className="flex flex-col sm:flex-row justify-center items-center">
-                    <OutboundLink
-                        className="px-4 py-3 hover:bg-slate-900 rounded-md"
-                        eventLabel="madeByLink"
-                        target="_blank"
-                        to="https://twitter.com/pseudoreact"
-                    >
-                        Twitter
-                    </OutboundLink>
-                    <span className="block mx-2 text-white">|</span>
-                    <OutboundLink
-                        className="px-4 py-3 hover:bg-slate-900 rounded-md"
-                        eventLabel="madeByLink"
-                        target="_blank"
-                        to="https://github.com/sethdavis512"
-                    >
-                        Created by @sethdavis512
-                    </OutboundLink>
-                    <span className="block mx-2 text-white">|</span>
-                    <OutboundLink
-                        className="px-4 py-3 hover:bg-slate-900 rounded-md"
-                        eventLabel="supportLink"
-                        target="_blank"
-                        to="https://www.buymeacoffee.com/sethdavis512"
-                    >
-                        Support
-                    </OutboundLink>
-                </div>
-            </Footer>
+            <Footer />
         </div>
     );
-};
-
-export default App;
+}

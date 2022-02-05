@@ -1,10 +1,5 @@
 import ReactGA from 'react-ga';
-import {
-    handleAst,
-    parseJsx,
-    PseudoItem,
-    defineTreeStructure,
-} from './parserUtils';
+import { handleAst, parseJsx, PseudoItem, defineTreeStructure } from './parser';
 
 export const convertPseudoToData = (pseudoCode: string): any => {
     try {
@@ -13,7 +8,7 @@ export const convertPseudoToData = (pseudoCode: string): any => {
         if (ast && ast.body) {
             return {
                 astResult: handleAst(ast.body),
-                treeResult: defineTreeStructure(ast.body),
+                treeResult: defineTreeStructure(),
             };
         }
 
@@ -26,9 +21,9 @@ export const convertPseudoToData = (pseudoCode: string): any => {
 
         ReactGA.exception({
             description:
-                // @ts-ignore
+                // @ts-ignore - TODO: Fix types
                 error && error.message
-                    ? // @ts-ignore
+                    ? // @ts-ignore - TODO: Fix types
                       error.message
                     : 'convertPseudoToData error',
             fatal: false,
@@ -41,9 +36,9 @@ export const getUniqueImports = (arrayOfPseudoItems: PseudoItem[]) => {
 
     return arrayOfPseudoItems.reduce(
         (uniqueImports: PseudoItem[], currentItem: PseudoItem) => {
-            // @ts-ignore
+            // @ts-ignore - TODO: Fix types
             if (!tracker[currentItem.name]) {
-                // @ts-ignore
+                // @ts-ignore - TODO: Fix types
                 tracker[currentItem.name] = 1;
 
                 uniqueImports.push({

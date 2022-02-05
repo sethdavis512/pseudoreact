@@ -1,6 +1,5 @@
-import React from 'react';
 import ReactGA from 'react-ga';
-// @ts-ignore
+// @ts-ignore - TODO: Fix types
 import Tree from 'ascii-tree';
 
 interface TreeProps {
@@ -14,7 +13,7 @@ const FileTree: React.FunctionComponent<TreeProps> = ({ data }) => {
         tree = Tree.generate(data);
     } catch (error) {
         console.log({ error });
-        
+
         // tree = 'Component tree is invalid...';
 
         ReactGA.exception({
@@ -26,7 +25,7 @@ const FileTree: React.FunctionComponent<TreeProps> = ({ data }) => {
     }
 
     return (
-        <pre className="border-2 border-slate-900 bg-gray-800 rounded-md p-4">
+        <pre className="border-2 border-black bg-gray-900 rounded-md p-4">
             <code>{tree}</code>
         </pre>
     );

@@ -10,7 +10,7 @@ import 'codemirror/lib/codemirror.css';
 import 'codemirror/mode/jsx/jsx';
 import 'codemirror/theme/monokai.css';
 
-// @ts-ignore
+// @ts-ignore - TODO: Fix types
 ReactGA.initialize(process.env.REACT_APP_GA_TRACKING_CODE);
 
 ReactDOM.render(
@@ -23,7 +23,7 @@ ReactDOM.render(
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-// @ts-ignore
+// @ts-ignore - TODO: Fix types
 function sendToAnalytics({ id, name, value }) {
     ReactGA.ga({
         eventCategory: 'Web Vitals',

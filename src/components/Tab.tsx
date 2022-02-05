@@ -1,4 +1,3 @@
-import React from 'react';
 import { useTabContext } from './Tabs';
 import ReactGA from 'react-ga';
 
@@ -7,7 +6,7 @@ interface TabProps {
 }
 
 const Tab: React.FunctionComponent<TabProps> = ({ children, id }) => {
-    // @ts-ignore - Fix types
+    // @ts-ignore - TODO: Fix types
     const { currentTab, handleSetCurrentTab } = useTabContext();
 
     const handleTabClick = () => {

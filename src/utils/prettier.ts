@@ -3,7 +3,7 @@ import ReactGA from 'react-ga';
 import { format } from 'prettier/standalone';
 import tsParser from 'prettier/parser-typescript';
 
-import prettierDefaultConfig from '../constants/prettierDefault';
+import prettierDefaultConfig from '../constants/prettier';
 
 const config: Options = {
     parser: 'typescript',
@@ -23,9 +23,9 @@ export const prettify = (
 
             ReactGA.exception({
                 description:
-                    // @ts-ignore
+                    // @ts-ignore - TODO: Fix types
                     error && error.message
-                        ? // @ts-ignore
+                        ? // @ts-ignore - TODO: Fix types
                           error.message
                         : 'prettify error',
                 fatal: false,

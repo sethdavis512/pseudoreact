@@ -5,7 +5,7 @@ import {
 } from '../constants/templates';
 import useLocalStorage from './useLocalStorage';
 
-interface PseudoReactState {
+export interface PseudoReactState {
     pseudoCode: string;
     rootComponent: string;
     childComponent: string;
@@ -39,6 +39,7 @@ const getInitialPseudoReactConfig = (): PseudoReactState => ({
 const LOCAL_STORAGE_KEY = 'pseudoReactApp';
 
 const usePseudoReact = (): [PseudoReactState, PseudoReactActions] => {
+    // TODO: Update hook to useReducer pattern
     const stateReducer = (
         state: PseudoReactState,
         action: PseudoReactActionTypes
@@ -57,15 +58,16 @@ const usePseudoReact = (): [PseudoReactState, PseudoReactActions] => {
         return state;
     };
 
-    const [pseudoReactState, setPseudoReactState] = useLocalStorage(
+    // TODO: Remove hook, apply useReducer pattern
+    const [storedPseudoState, setStoredPseudoState] = useLocalStorage(
         LOCAL_STORAGE_KEY,
         getInitialPseudoReactConfig()
     );
 
     const actions = {
         updateTemplate: (targetKey: string, text: string) => {
-            setPseudoReactState(
-                stateReducer(pseudoReactState, {
+            setStoredPseudoState(
+                stateReducer(storedPseudoState, {
                     type: 'UPDATE_STATE',
                     payload: {
                         targetKey,
@@ -75,15 +77,15 @@ const usePseudoReact = (): [PseudoReactState, PseudoReactActions] => {
             );
         },
         resetTemplates: () => {
-            setPseudoReactState(
-                stateReducer(pseudoReactState, {
+            setStoredPseudoState(
+                stateReducer(storedPseudoState, {
                     type: 'RESET_TEMPLATES',
                 })
             );
         },
     };
 
-    return [pseudoReactState, actions];
+    return [storedPseudoState, actions];
 };
 
 export default usePseudoReact;

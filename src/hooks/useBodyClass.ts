@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-export const useBodyClass = (className: string) => {
+export const useBodyClass = (className: string): void => {
     useEffect(() => {
         // Add a class to the body.
         document.body.classList.add(className);

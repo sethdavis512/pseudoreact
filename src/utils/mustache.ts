@@ -13,9 +13,9 @@ export const compileContent = (templateString, data, errorCallback): string => {
 
             ReactGA.exception({
                 description:
-                    // @ts-ignore
+                    // @ts-ignore - TODO: Fix types
                     error && error.message
-                        ? // @ts-ignore
+                        ? // @ts-ignore - TODO: Fix types
                           error.message
                         : 'Mustache parse error',
                 fatal: false,

@@ -19,7 +19,7 @@ const Tabs: React.FunctionComponent<TabsProps> = ({
     };
 
     return (
-        // @ts-ignore - Fix types
+        // @ts-ignore - TODO: Fix types
         <TabContext.Provider value={{ currentTab, handleSetCurrentTab }}>
             {children}
         </TabContext.Provider>
